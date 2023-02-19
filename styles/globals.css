@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url(https://fonts.googleapis.com/css?family=Poppins:regular,500,600,700);
+
+body {
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+}
