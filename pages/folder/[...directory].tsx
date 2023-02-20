@@ -8,7 +8,7 @@ import { BtnType } from '../../types'
 
 function FolderDirectory() {
 	return (
-		<main className="bg-black h-[100vh] w-full text-white p-6">
+		<main className="main">
 			<div className="flex justify-between items-center">
 				<Button type={BtnType.Back} />
 				<Button type={BtnType.Edit} />

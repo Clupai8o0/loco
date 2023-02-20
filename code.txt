@@ -1,0 +1,101 @@
+- Getting UUID for unique keys
+
+- Video File
+import { useRouter } from "next/router";
+import React, { useEffect, useState, useRef } from "react";
+
+function Video() {
+	const router = useRouter();
+	const videoRef = useRef();
+	let { video } = router.query;
+
+	const [path, setPath] = useState("");
+
+	const setPlaybackSpeed = () => {
+		if (videoRef !== undefined) {
+			videoRef.current.playbackRate = 1.25;
+		}
+	}
+
+	useEffect(() => {
+		if (!video) return;
+
+		setPath(
+			(typeof video === "string" ? [video] : video)
+				.map((p) => {
+					if (p?.includes("$23")) p = p.replace("$23", "#");
+					if (p?.includes("$24")) p = p.replace("$24", "&");
+					if (p?.includes("$25")) p = p.replace("$25", "+");
+
+					return p;
+				})
+				.join("/")
+		);
+	}, [video, path]);
+
+	return (
+		<div>
+			<p>{path}</p>
+			<div>
+				{path.length > 0 && (
+					<video width="1920" height="1080" controls autoPlay ref={videoRef} onCanPlay={() => setPlaybackSpeed()}>
+						<source src={`/videos/${path}`} type="video/mp4" />
+					</video>
+				)}
+			</div>
+		</div>
+	);
+}
+
+export default Video;
+
+- router query code
+	const router = useRouter();
+	let { video } = router.query;
+
+- File Reader
+import fs from "fs";
+import path from "path";
+
+import colors from "colors";
+
+import { NextApiRequest, NextApiResponse } from "next";
+const files = (req: NextApiRequest, res: NextApiResponse) => {
+	//* Getting the path
+	let {
+		query: { dir },
+	} = req;
+
+	//* Replacing $23 for #
+	if (typeof dir === "string") {
+		if (dir?.includes("$23")) {
+			dir = dir.replace("$23", "#");
+		} else if (dir?.includes("$24")) {
+			dir = dir.replace("$24", "&");
+		} else if (dir?.includes("$25")) {
+			dir = dir.replace("$25", "+");
+		}
+	}
+
+	//* Joining the server directory path
+	const directoryPath = path.join(
+		__dirname,
+		`../../../../public/videos/${dir || ""}`
+	);
+
+	//* Reading the files in the directory
+	fs.readdir(directoryPath, (err, files) => {
+		//! in the case of error while reading
+		if (err) {
+			console.error(colors.red("Could not list the directory. " + err));
+			res.status(500).json({ message: "Could not list directory", error: err });
+			return;
+		}
+
+		//? success in reading the directory
+		res.status(200).json({ message: "Directory", files });
+		return;
+	});
+};
+
+export default files;
