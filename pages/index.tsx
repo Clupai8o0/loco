@@ -1,3 +1,5 @@
+import { GetServerSideProps } from "next";
+
 import Title from "../components/title";
 import Card from "../components/card";
 
@@ -12,3 +14,13 @@ export default function Home() {
 		</main>
 	);
 }
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+	const resp = await fetch("/api/initialize");
+
+	console.log(resp);
+
+	return {
+		props: {},
+	};
+};
