@@ -1,25 +1,34 @@
+import { useState } from "react";
 import { GetServerSideProps } from "next";
 
 import Title from "../components/title";
 import Card from "../components/card";
+import AddFolderButton from "../components/addFolderButton";
+import AddFolderModal from "../components/addFolderModal";
+
+import settings from "../config/settings.json";
 
 export default function Home() {
+	const [openModal, setOpenModal] = useState(false);
+	const handleModal = () => setOpenModal(() => !openModal);
+
 	return (
 		<main className="main">
 			<Title text="Home" />
-			<Card
-				title="Card Title"
-				paragraph="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, quaerat sapiente perspiciatis, velit impedit officia soluta dolore tempore consectetur error quos dolores! Mollitia harum voluptates ex labore minima veniam! Ratione!"
-			/>
+
+			{settings.folders.map(({ path, title, details }, i) => (
+				<Card title={title} paragraph={details} path={path} key={i} />
+			))}
+
+			<AddFolderButton handleModal={handleModal} />
+			<AddFolderModal open={openModal} handleModal={handleModal} />
 		</main>
 	);
 }
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-	const resp = await fetch("/api/initialize");
-
-	console.log(resp);
-
+export const getServerSideProps: GetServerSideProps = async () => {
+	//* Initializing the settings file
+	await fetch("http://localhost:3000/api/initialize");
 	return {
 		props: {},
 	};

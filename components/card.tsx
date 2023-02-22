@@ -11,13 +11,23 @@ const Ribbon = () => (
 	></motion.div>
 );
 
-const Card = ({ title, paragraph }: { title: string; paragraph: string }) => {
+const Card = ({
+	title,
+	paragraph,
+	path,
+}: {
+	title: string;
+	paragraph: string;
+	path: string;
+}) => {
 	return (
 		<Link href="/folder/courses">
-			<div className="bg-[#17191D] w-full h-[200px] rounded-md relative z-0">
+			<div className="bg-[#17191D] w-full h-[200px] rounded-md relative z-0 mb-6">
 				<Ribbon />
 				<main className="relative z-1 w-full h-full p-6">
-					<h2 className="font-sans font-medium text-[20px] mb-2">{title}</h2>
+					<h2 className="font-sans font-medium text-[20px] mb-2 capitalize">
+						{title}
+					</h2>
 					<p className="font-sans text-[14px] opacity-70 leading-6">
 						{paragraph}
 					</p>
