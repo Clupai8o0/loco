@@ -35,7 +35,7 @@ export default function (req: NextApiRequest, res: NextApiResponse<Data>) {
 			res.status(200).json({ success: true, msg: "File already exists" });
 		} else {
 			//* Initializing the file
-			fs.writeFile("/config/settings.json", JSON.stringify(settings), (err) => {
+			fs.writeFile(path.join(__dirname, "../../../../config/settings.json"), JSON.stringify(settings), (err) => {
 				//* If there is an error while writing to file
 				if (err) {
 					console.log(

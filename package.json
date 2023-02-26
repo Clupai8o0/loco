@@ -1,34 +1,35 @@
 {
-  "name": "loco",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "@emotion/react": "^11.10.6",
-    "@emotion/styled": "^11.10.6",
-    "@mui/icons-material": "^5.11.9",
-    "@mui/joy": "^5.0.0-alpha.68",
-    "@mui/material": "^5.11.9",
-    "@mui/material-next": "^6.0.0-alpha.75",
-    "@next/font": "13.1.6",
-    "@types/node": "18.14.0",
-    "@types/react": "18.0.28",
-    "@types/react-dom": "18.0.11",
-    "framer-motion": "^9.0.4",
-    "next": "13.1.6",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "react-player": "^2.11.2",
-    "typescript": "4.9.5"
-  },
-  "devDependencies": {
-    "autoprefixer": "^10.4.13",
-    "postcss": "^8.4.21",
-    "tailwindcss": "^3.2.7"
-  }
+	"name": "loco",
+	"version": "0.1.0",
+	"private": true,
+	"scripts": {
+		"dev": "next dev",
+		"build": "next build",
+		"start": "next start",
+		"lint": "next lint"
+	},
+	"dependencies": {
+		"@emotion/react": "^11.10.6",
+		"@emotion/styled": "^11.10.6",
+		"@mui/icons-material": "^5.11.9",
+		"@mui/material": "^5.11.9",
+		"@next/font": "13.1.6",
+		"@types/sort-array": "^4.1.0",
+		"cryptr": "^6.1.0",
+		"next": "13.1.6",
+		"react": "18.2.0",
+		"react-dom": "18.2.0",
+		"react-player": "^2.11.2",
+		"sort-array": "^4.1.5",
+		"typescript": "4.9.5"
+	},
+	"devDependencies": {
+		"@types/bcrypt": "^5.0.0",
+		"@types/node": "18.14.0",
+		"@types/react": "18.0.28",
+		"@types/react-dom": "18.0.11",
+		"autoprefixer": "^10.4.13",
+		"postcss": "^8.4.21",
+		"tailwindcss": "^3.2.7"
+	}
 }

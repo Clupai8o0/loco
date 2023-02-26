@@ -1,17 +1,24 @@
 import React from "react";
 
 import MUIButton from "@mui/material/Button";
-import IconButton from '@mui/material/IconButton';
+import IconButton from "@mui/material/IconButton";
 
 import { BtnType } from "../types";
 
-const Button = ({ type }: { type: BtnType }) => {
+const Button = ({
+	type,
+	handler,
+}: {
+	type: BtnType;
+	handler?: () => void;
+}) => {
 	if (type === BtnType.Back)
 		return (
 			<MUIButton
 				variant="text"
 				color="primary"
 				className="font-sans capitalize text-[12px] leading-3 font-medium bg-[rgba(208,188,255,0.08)] hover:bg-[rgba(208,188,255,0.2)] flex pt-2 pb-2 pr-4 pl-3 justify-center items-center gap-2 rounded-full mb-6"
+				onClick={handler}
 			>
 				<svg
 					width="18"
@@ -32,8 +39,9 @@ const Button = ({ type }: { type: BtnType }) => {
 		return (
 			<IconButton
 				color="primary"
-        style={{ padding: '12px', marginBottom: '24px'}}
+				style={{ padding: "12px", marginBottom: "24px" }}
 				// className="bg-[rgba(208,188,255,0.08)] hover:bg-[rgba(208,188,255,0.2)] flex justify-center items-center mb-6 rounded-full p-3 h-8 w-8"
+				onClick={handler}
 			>
 				<svg
 					width="18"

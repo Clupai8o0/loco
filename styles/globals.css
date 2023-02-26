@@ -12,6 +12,6 @@ body {
 
 @layer components {
   .main {
-    @apply bg-black h-[100vh] w-full text-white p-6;
+    @apply bg-black min-h-screen h-[100%] w-full text-white p-6;
   }
 }

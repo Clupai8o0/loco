@@ -43,29 +43,27 @@ const AddFolderModal = ({
 					we'll handle the rest
 				</p>
 				<form onSubmit={handleFolderSubmit}>
-					<div className="mb-4">
-						<Input
-							required
-							placeholder="eg: C:Users/abc/dreams..."
-							className="text-white font-sans text-[14px] border-b-gray-500 pb-1 pl-2 pr-2"
-							name="path"
-							id="path"
-						/>
-						<Button
-							type="submit"
-							color="primary"
-							className="bg-blue-600 text-white font-sans capitalize text-sm ml-4 pl-4 pr-4"
-						>
-							Submit
-						</Button>
-					</div>
+					<Input
+						required
+						placeholder="eg: C:Users/abc/dreams..."
+						className="text-white font-sans text-[14px] border-b-gray-500 pb-1 pl-2 pr-2 mb-4 w-full"
+						name="path"
+						id="path"
+					/>
 					<textarea
 						placeholder="Type something here..."
 						id="details"
 						name="details"
 						required
-						className="font-sans text-white w-full bg-black border-gray-600 text-[14px]"
+						className="font-sans text-white w-full bg-black border-gray-600 text-[14px] mb-4"
 					/>
+					<Button
+						type="submit"
+						color="primary"
+						className="bg-blue-600 text-white font-sans capitalize text-sm ml-4 pl-4 pr-4"
+					>
+						Submit
+					</Button>
 				</form>
 			</div>
 		</Modal>

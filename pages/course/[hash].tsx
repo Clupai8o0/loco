@@ -7,21 +7,43 @@ import Button from "../../components/button";
 import Title from "../../components/title";
 
 import { BtnType } from "../../types";
-import { Tab, Tabs } from "@mui/material";
 
+import { Tab, Tabs } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
-// import p from "@mui/material/p";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+
+import { useRouter } from "next/router";
 
 enum TabValue {
 	Content = "Content",
 	About = "About",
 }
 
-function CourseDirectory() {
+
+// So there should be ls
+// if it is a folder, create a accordion component that ls inside that folder
+// inside each of those, there is a video component that sets the state of the video
+
+function CourseDirectory({ path }: { path: string }) {
+	const router = useRouter();
 	const [tab, setTab] = useState(TabValue.Content);
+
+	const handleBack = () => {
+		router.back();
+	};
+
+	const handleToggleFolderType = () => {
+		// fetch("/api/set-config", {
+		// 	method: "POST",
+		// 	headers: { "Content-Type": "application/json" },
+		// 	body: JSON.stringify({
+		// 		path,
+		// 		value: "folder",
+		// 	}),
+		// });
+	};
 
 	const handleTabChange = () => {
 		if (tab === TabValue.Content) setTab(TabValue.About);
@@ -31,16 +53,22 @@ function CourseDirectory() {
 	return (
 		<main className="main">
 			<div className="flex justify-between">
-				<Button type={BtnType.Back} />
-				<Button type={BtnType.Edit} />
+				<Button type={BtnType.Back} handler={handleBack} />
+				<Button type={BtnType.Edit} handler={handleToggleFolderType} />
 			</div>
-			<ReactPlayer
-				url="/0001_Bash_Scripting_Learn_Shell_Scripting.mp4"
+			<video width="320" height="240" controls>
+				<source
+					src="../../../../Downloads/core-01-intro.mp4"
+					type="video/mp4"
+				/>
+			</video>
+			{/* <ReactPlayer
+				url="F:\\Courses\\courses-app\\public\\videos\\Developer\\Web Developer\\Deno - The Complete Introduction\\3.Understanding Core APIs\\core-01-intro.mp4"
 				playing
 				controls
 				width="100%"
 				height="50%"
-			/>
+			/> */}
 
 			<Tabs
 				value={tab}
