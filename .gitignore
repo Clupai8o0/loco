@@ -37,3 +37,8 @@ next-env.d.ts
 
 # config file
 /config/settings.json
+
+# public files
+/public/videos
+
+/.vscode

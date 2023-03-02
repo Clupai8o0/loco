@@ -1,48 +1,87 @@
-import React, { useState } from "react";
-
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
-const ReactPlayer = dynamic(() => import("react-player/lazy"), { ssr: false });
 
-import Button from "../../components/button";
-import Title from "../../components/title";
-
-import { BtnType } from "../../types";
+import { Title, DirectoryNav, Head, Button, Accordion } from "../../components";
+import { RenderTypes, FileDetails, FileTypes } from "../../types";
 
 import { Tab, Tabs } from "@mui/material";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-
-import { useRouter } from "next/router";
 
 enum TabValue {
 	Content = "Content",
 	About = "About",
 }
 
+const ReactPlayer = dynamic(() => import("react-player/lazy"), { ssr: false });
 
-// So there should be ls
-// if it is a folder, create a accordion component that ls inside that folder
-// inside each of those, there is a video component that sets the state of the video
-
-function CourseDirectory({ path }: { path: string }) {
+function CourseDirectory({
+	path,
+	title,
+	files,
+	videos,
+	state,
+}: {
+	path: string;
+	title: string;
+	files: FileDetails[];
+	videos: FileDetails[];
+	state: {
+		id: number;
+		path: string;
+		playedSeconds: number;
+		title: string;
+	} | null;
+}) {
 	const router = useRouter();
 	const [tab, setTab] = useState(TabValue.Content);
+	const [video, setVideo] = useState({
+		path: "",
+		title: "",
+		id: 0,
+	});
+	const [playedSeconds, setPlayedSeconds] = useState(0);
+	let initialPlayedSeconds = state.playedSeconds;
 
-	const handleBack = () => {
-		router.back();
+	useEffect(() => {
+		if (state) {
+			setVideo({
+				id: state.id,
+				path: state.path,
+				title: state.title,
+			});
+		} else {
+			setVideoState(videos[0].title);
+		}
+	}, []);
+
+	const setCourseState = async () => {
+		await fetch(
+			"/api/set-course-state",
+			jsonFetchDefinition({
+				id: video.id,
+				videoPath: video.path,
+				title: video.title,
+				playedSeconds,
+				path,
+			})
+		);
 	};
 
-	const handleToggleFolderType = () => {
-		// fetch("/api/set-config", {
-		// 	method: "POST",
-		// 	headers: { "Content-Type": "application/json" },
-		// 	body: JSON.stringify({
-		// 		path,
-		// 		value: "folder",
-		// 	}),
-		// });
+	useEffect(() => {
+		setCourseState();
+	}, [playedSeconds]);
+
+	const setVideoState = (title: string) => {
+		for (let i = 0; i < videos.length; i++) {
+			if (videos[i].title === title) {
+				const arr = videos[i].path.split("\\");
+				setVideo({
+					title: `${arr[arr.length - 2]} > ${videos[i].title}`,
+					path: `\\${arr.splice(3).join("\\")}`,
+					id: videos[i].id,
+				});
+			}
+		}
 	};
 
 	const handleTabChange = () => {
@@ -51,93 +90,131 @@ function CourseDirectory({ path }: { path: string }) {
 	};
 
 	return (
-		<main className="main">
-			<div className="flex justify-between">
-				<Button type={BtnType.Back} handler={handleBack} />
-				<Button type={BtnType.Edit} handler={handleToggleFolderType} />
-			</div>
-			<video width="320" height="240" controls>
-				<source
-					src="../../../../Downloads/core-01-intro.mp4"
-					type="video/mp4"
-				/>
-			</video>
-			{/* <ReactPlayer
-				url="F:\\Courses\\courses-app\\public\\videos\\Developer\\Web Developer\\Deno - The Complete Introduction\\3.Understanding Core APIs\\core-01-intro.mp4"
-				playing
-				controls
-				width="100%"
-				height="50%"
-			/> */}
+		<>
+			<Head />
+			<main className="main">
+				<DirectoryNav router={router} path={path} value={RenderTypes.Folders} />
 
-			<Tabs
-				value={tab}
-				onChange={handleTabChange}
-				textColor="primary"
-				indicatorColor="primary"
-				className="w-full"
-			>
-				<Tab
-					value={TabValue.Content}
-					label={TabValue.Content}
-					className="text-gray-400 font-sans capitalize w-1/2"
+				<ReactPlayer
+					url={video.path}
+					playing
+					controls
+					width="100%"
+					height="50%"
+					progressInterval={5000}
+					onProgress={(progress) => {
+						setPlayedSeconds(progress.playedSeconds);
+					}}
 				/>
-				<Tab
-					value={TabValue.About}
-					label={TabValue.About}
-					className="text-gray-400 font-sans capitalize w-1/2"
-				/>
-			</Tabs>
 
-			{tab === TabValue.Content ? (
-				<div>
-					<Accordion>
-						<AccordionSummary
-							expandIcon={<ExpandMoreIcon color="primary" />}
-							aria-controls="panel1a-content"
-							id="panel1a-header"
-							className="bg-[rgba(21,23,26,1)] w-full font-sans text-[14px] text-white"
-						>
-							<p className="opacity-80">Accordion 1</p>
-						</AccordionSummary>
-						<AccordionDetails className="bg-[rgba(19,20,21,1)] w-full font-sans text-white text-[14px]">
-							<p>
-								Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-								Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-								eget.
-							</p>
-						</AccordionDetails>
-					</Accordion>
-					<Accordion>
-						<AccordionSummary
-							expandIcon={<ExpandMoreIcon color="primary" />}
-							aria-controls="panel2a-content"
-							className="bg-[rgba(21,23,26,1)] w-full font-sans text-[14px] text-white"
-						>
-							<p className="opacity-80">Accordion 2</p>
-						</AccordionSummary>
-						<AccordionDetails className="bg-[rgba(19,20,21,1)] w-full font-sans text-white text-[14px]">
-							<p>
-								Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-								Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-								eget.
-							</p>
-						</AccordionDetails>
-					</Accordion>
-				</div>
-			) : (
-				<article>
-					<Title text="Folder Title" margin="mb-2 mt-6" />
-					<p className="font-sans text-[14px] text-white opacity-60 leading-5">
-						Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-						Cupiditate, quis. Quae harum aliquam saepe adipisci possimus neque
-						voluptatem quos, at rem! Earum suscipit libero optio blanditiis ab
-						veniam repudiandae aliquam.
-					</p>
-				</article>
-			)}
-		</main>
+				<p className="font-sans text-white capitalize mt-4">
+					{video.title}{" "}
+					<span className="font-bold">
+						{new Date(initialPlayedSeconds * 1000).toISOString().slice(11, 19)} : {Math.round(playedSeconds)}
+					</span>
+				</p>
+
+				<Tabs
+					value={tab}
+					onChange={handleTabChange}
+					textColor="primary"
+					indicatorColor="primary"
+					className="w-full"
+				>
+					<Tab
+						value={TabValue.Content}
+						label={TabValue.Content}
+						className="text-gray-400 font-sans capitalize w-1/2"
+					/>
+					<Tab
+						value={TabValue.About}
+						label={TabValue.About}
+						className="text-gray-400 font-sans capitalize w-1/2"
+					/>
+				</Tabs>
+
+				{tab === TabValue.Content ? (
+					<Accordion
+						title="Course"
+						content={files.map((file: FileDetails, i) => {
+							if (file.type === FileTypes.Folder) {
+								return (
+									<Accordion
+										key={i}
+										title={file.title}
+										content={file.content?.map(
+											(contentFile: FileDetails, i) => {
+												return (
+													<Button
+														key={i}
+														title={contentFile.title}
+														type={contentFile.type}
+														handler={setVideoState}
+													/>
+												);
+											}
+										)}
+									/>
+								);
+							} else {
+								return (
+									<Button
+										key={i}
+										title={file.title}
+										type={file.type}
+										handler={setVideoState}
+									/>
+								);
+							}
+						})}
+					/>
+				) : (
+					<article>
+						<Title text={title} margin="mb-2 mt-6" />
+						<p className="font-sans text-[14px] text-white opacity-60 leading-5">
+							Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+							Cupiditate, quis. Quae harum aliquam saepe adipisci possimus neque
+							voluptatem quos, at rem! Earum suscipit libero optio blanditiis ab
+							veniam repudiandae aliquam.
+						</p>
+					</article>
+				)}
+			</main>
+		</>
 	);
 }
 
 export default CourseDirectory;
+
+import { GetServerSideProps } from "next";
+
+import {
+	hashDecrypter,
+	extractTitle,
+	jsonFetchDefinition,
+} from "../../utils/api";
+import { courseFilesFetcher, videosLister } from "../../utils/pageProps";
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+	if (ctx.query.hash) {
+		//@ts-ignore
+		const path = await hashDecrypter(ctx.query.hash);
+		const title = extractTitle(path);
+
+		// The config already exists, since we're here
+		const files = await courseFilesFetcher(path);
+		const videos = videosLister(files);
+
+		const respState = await fetch(
+			"http://localhost:3000/api/get-course-state",
+			jsonFetchDefinition({ path })
+		);
+		const state = (await respState.json()).data;
+
+		return {
+			props: { title, path, files, videos, state },
+		};
+	} else {
+		throw Error("No path hash provided");
+	}
+};
