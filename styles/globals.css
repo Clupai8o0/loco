@@ -1,0 +1,40 @@
+@import url(https://fonts.googleapis.com/css?family=Poppins:100,100italic,200,200italic,300,300italic,regular,italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic);
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	background-color: #121417;
+
+	overflow-x: hidden;
+}
+
+@layer components {
+	.main {
+		@apply bg-black min-h-screen h-full w-full xl:max-w-5xl text-white p-6 md:p-10 xl:p-16;
+	}
+	.parent-main {
+		@apply bg-black flex items-center justify-center;
+	}
+	.card-layout {
+		@apply grid grid-cols-1 md:grid-cols-3 gap-6;
+	}
+
+	.nav {
+		@apply mb-6 md:mb-8 xl:mb-10 flex justify-between items-center md:justify-start md:gap-6 xl:gap-10;
+	}
+
+	.parent-tab {
+		@apply font-sans text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700
+	}
+	.deselected {
+		@apply inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300;
+	}
+	.selected {
+		@apply inline-block p-4 text-blue-500 border-b-2 border-blue-500 rounded-t-lg;
+	}
+}
