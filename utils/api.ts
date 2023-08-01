@@ -41,7 +41,7 @@ export function handleError(
 
 export async function hashDecrypter(hash: string | string[] | undefined) {
 	const resp = await fetch(
-		"http://localhost:3000/api/decrypt",
+		"http://localhost:3001/api/decrypt",
 		jsonFetchDefinition({ hash })
 	);
 	return (await resp.json()).data;
@@ -49,7 +49,7 @@ export async function hashDecrypter(hash: string | string[] | undefined) {
 
 export async function redirector(path: string, type: RenderTypes) {
 	const resp = await fetch(
-		"http://localhost:3000/api/folder-type",
+		"http://localhost:3001/api/folder-type",
 		jsonFetchDefinition({ path })
 	);
 	const config = (await resp.json()).data;

@@ -148,7 +148,7 @@ function Course({
 							{video.title}
 						</h3>
 
-						<CourseDetails  styles={`hidden md:block`} />
+						<CourseDetails title={title} styles={`hidden md:block`} />
 					</div>
 
 					<Tabs toggleTab={toggleTab} tab={tab} />
@@ -172,7 +172,7 @@ function Course({
 					</Accordion>
 
 					<CourseDetails
-						
+						title={title}
 						styles={`${tab === TabTypes.About ? "block" : "hidden"} md:hidden`}
 					/>
 				</div>
@@ -200,7 +200,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
 		// Getting course state
 		const respState = await fetch(
-			"http://localhost:3000/api/get-course-state",
+			"http://localhost:3001/api/get-course-state",
 			jsonFetchDefinition({ path })
 		);
 		const state = (await respState.json()).data;

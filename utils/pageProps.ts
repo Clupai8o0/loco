@@ -6,7 +6,7 @@ import { jsonFetchDefinition } from "./api";
 export async function filesFetcher(path: string) {
 	// Getting all the files
 	const respLS = await fetch(
-		"http://localhost:3000/api/read-dir",
+		"http://localhost:3001/api/read-dir",
 		jsonFetchDefinition({
 			path,
 		})

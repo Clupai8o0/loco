@@ -55,7 +55,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
 		// Setting up config file
 		await fetch(
-			"http://localhost:3000/api/init-folder-config",
+			"http://localhost:3001/api/init-folder-config",
 			jsonFetchDefinition({ path })
 		);
 
