@@ -6,7 +6,7 @@ import nodePath from "path";
 import { Response, FileTypes } from "@/types";
 import { respond, handleError } from "../../utils/api";
 
-const video = [".mp4", ".mov", ".mpg", ".gif", ".m4v", ".flv", ".ts"];
+const video = [".mp4", ".mov", ".mpg", ".gif", ".m4v", ".flv", ".ts", ".mkv"];
 const zip = [".rar", ".zip", ".7z"];
 const attachment = [
 	".pdf",
@@ -32,6 +32,8 @@ const attachment = [
 	".brushset",
 	".abr",
 	".grd",
+	".csv",
+	".fig"
 ];
 const audio = [".mp3", ".wav"];
 const image = [".png", ".jpg", ".jpeg", ".tif"];

@@ -1,9 +1,9 @@
 import NextHead from "next/head";
 
-const Head = ({ title }: { title?: string }) => {
+const Head = () => {
 	return (
 		<NextHead>
-			<title>loco: {title}</title>
+			<title>loco</title>
 			<meta
 				name="description"
 				content="A simple app that locates a course folder and renders it as a course"

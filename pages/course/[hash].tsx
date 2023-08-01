@@ -117,7 +117,7 @@ function Course({
 
 	return (
 		<div style={{ width: "100vw" }} className="parent-main">
-			<Head title={title} />
+			<Head  />
 			<main className="main">
 				<Nav router={router} path={path} value={RenderTypes.Folders} />
 
@@ -148,7 +148,7 @@ function Course({
 							{video.title}
 						</h3>
 
-						<CourseDetails title={title} styles={`hidden md:block`} />
+						<CourseDetails  styles={`hidden md:block`} />
 					</div>
 
 					<Tabs toggleTab={toggleTab} tab={tab} />
@@ -172,7 +172,7 @@ function Course({
 					</Accordion>
 
 					<CourseDetails
-						title={title}
+						
 						styles={`${tab === TabTypes.About ? "block" : "hidden"} md:hidden`}
 					/>
 				</div>
